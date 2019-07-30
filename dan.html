@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload</title>
+</head>
+<body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase.js"></script>
+
+  <label>
+  Upload file
+  <input type="file" id="file" />
+  </label>
+  <button type="button" id="upload" onclick="upload" >Upload</button>
+  <script >
+    var selectedFile;
+  $(document).ready(function()
+  {
+  
+  var config = {
+    apiKey: "AIzaSyD4ccNRnzMNEfcrGqrTzjAJP49Xo47jLT8",
+    authDomain: "event-management-system-4727d.firebaseapp.com",
+    databaseURL: "https://event-management-system-4727d.firebaseio.com",
+    projectId: "event-management-system-4727d",
+    storageBucket: "event-management-system-4727d.appspot.com",
+    messagingSenderId: "398161509541"
+  };
+  firebase.initializeApp(config);
+
+  var ref=firebase.database().ref('Review');
+  $("#file").on("change", function(event)){
+    selectedFile=event.target.files[0];
+
+  }
+
+ 
+  function upload() {
+    var filename= selectedFile.name;
+    var storageRef = firebase.storage().ref("/upload/"+filename);
+    var uploadTask = storageRef.put(selectedFile);
+    // Register three observers:
+// 1. 'state_changed' observer, called any time the state changes
+// 2. Error observer, called on failure
+// 3. Completion observer, called on successful completion
+uploadTask.on('state_changed', function(snapshot){
+  // Observe state change events such as progress, pause, and resume
+  // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+
+}, function(error) {
+  // Handle unsuccessful uploads
+}, function() {
+  // Handle successful uploads on complete
+  // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+  var downloadURL = uploadTask.snapshot.downloadURL;
+console.log(downloadURL);
+});
+
+
+
+  });
+  
+});
+
+</body>
+</html>
